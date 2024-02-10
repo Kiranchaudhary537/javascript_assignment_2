@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Management System</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <!-- Header with buttons -->
+      <div class="buttonsHeader">
+        <button id="addEmployeeButton" onclick="showEmployeeForm()">
+          Add Employee
+        </button>
+      </div>
+
+      <!-- Table to display employee data -->
+      <table id="employeeTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Employee ID</th>
+            <th>Designation</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="employeeList"></tbody>
+      </table>
+    </main>
+
+    <!-- Overlay to cover the page when forms are shown -->
+    <div id="overlay" onclick="hideForms()"></div>
+
+    <!-- Modal for add/edit employee form -->
+    <div id="addEditFormContainer">
+      <div class="form">
+        <h2 id="formTitle">Add/Edit Employee</h2>
+        <form id="employeeForm">
+          <input type="text" id="idInput" placeholder="Employee ID" required />
+          <input type="text" id="nameInput" placeholder="Name" required />
+          <input type="text" id="addressInput" placeholder="Address" required />
+          <input
+            type="text"
+            id="designationInput"
+            placeholder="Designation"
+            required
+          />
+          <button
+            type="submit"
+            id="addEditButton"
+            onclick="addOrEditEmployee()"
+          >
+            Add Employee
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
