@@ -1,13 +1,12 @@
-// Employee class 
+// Employee class
 class Employee {
-  constructor(name, address, id, designation) {
+  constructor(id, name, address, designation) {
     this.name = name;
     this.address = address;
     this.id = id;
     this.designation = designation;
   }
-  editEmployeeDetails(id, name, address, designation) {
-    this.id = id;
+  editEmployeeDetails(name, address, designation) {
     this.name = name;
     this.address = address;
     this.designation = designation;
@@ -15,23 +14,28 @@ class Employee {
 }
 
 let employees = [];
+let isNewEmployee=true;
 
 // Add or Edit employee based on form input
 function addOrEditEmployee() {
   const [id, name, address, designation] = getEmployeeFormData();
-  
+
   if (!validateEmployeeData(id, name, address, designation)) {
     return;
   }
 
   const index = employees.findIndex((emp) => emp.id == id);
   if (index !== -1) {
-    employees[index].editEmployeeDetails(id, name, address, designation);
+    if(isNewEmployee==true){
+      alert("Employee with id exist.");
+    }
+    employees[index].editEmployeeDetails(name, address, designation);
   } else {
-    employees.push(new Employee(name, address, id, designation));
+    employees.push(new Employee(id, name, address, designation));
   }
 
   //helpers
+  isNewEmployee=true;
   setReadOnly(false);
   clearInputFields();
   displayEmployeeList();
@@ -43,6 +47,7 @@ function editEmployeeForm(id) {
   const employee = employees.find((emp) => emp.id == id);
   if (employee) {
     setReadOnly(true);
+    isNewEmployee=false;
     setEmployeeFormData(employee);
     showEmployeeForm();
   } else {
@@ -74,7 +79,6 @@ function displayEmployeeList() {
   });
 }
 
-
 // Fetch data from input fields
 function getEmployeeFormData() {
   const name = document.getElementById("nameInput").value;
@@ -89,12 +93,11 @@ function setEmployeeFormData(employee) {
   document.getElementById("idInput").value = employee.id;
   document.getElementById("nameInput").value = employee.name;
   document.getElementById("addressInput").value = employee.address;
-  document.getElementById("designationInput").value = employee.designation; 
+  document.getElementById("designationInput").value = employee.designation;
 }
 
-
 //set input field's readonly value
-function setReadOnly(value){
+function setReadOnly(value) {
   document.getElementById("idInput").readOnly = value;
 }
 
