@@ -6,15 +6,39 @@ class Employee {
     this.id = id;
     this.designation = designation;
   }
-  editEmployeeDetails(name, address, designation) {
+  editDetails(name, address, designation) {
     this.name = name;
     this.address = address;
     this.designation = designation;
   }
 }
 
+// Variables
 let employees = [];
-let isNewEmployee=true;
+let isNewEmployee = true;
+
+// Function to add a new employee
+function addEmployee(employee) {
+  employees.push(employee);
+}
+
+// Function to update an existing employee
+function updateEmployee(id, name, address, designation) {
+  const index = employeeIndex(id);
+  if (index !== -1) {
+    employees[index].editDetails(name, address, designation);
+  }
+}
+
+// Function to return index of employee with given ID
+function employeeIndex(id) {
+  return employees.findIndex((emp) => emp.id == id);
+}
+
+// Function to check if an employee with the given ID exists
+function employeeExists(id) {
+  return employees.some((emp) => emp.id == id);
+}
 
 // Add or Edit employee based on form input
 function addOrEditEmployee() {
@@ -24,18 +48,16 @@ function addOrEditEmployee() {
     return;
   }
 
-  const index = employees.findIndex((emp) => emp.id == id);
-  if (index !== -1) {
-    if(isNewEmployee==true){
-      alert("Employee with id exist.");
-    }
-    employees[index].editEmployeeDetails(name, address, designation);
+  if (employeeExists(id) == true) {
+    isNewEmployee
+      ? alert("Employee with same id exists.")
+      : updateEmployee(id, name, address, designation);
   } else {
-    employees.push(new Employee(id, name, address, designation));
+    addEmployee(new Employee(id, name, address, designation));
   }
 
   //helpers
-  isNewEmployee=true;
+  isNewEmployee = true;
   setReadOnly(false);
   clearInputFields();
   displayEmployeeList();
@@ -44,10 +66,10 @@ function addOrEditEmployee() {
 
 // Edit employee form
 function editEmployeeForm(id) {
-  const employee = employees.find((emp) => emp.id == id);
+  const employee = employees[employeeIndex(id)];
   if (employee) {
     setReadOnly(true);
-    isNewEmployee=false;
+    isNewEmployee = false;
     setEmployeeFormData(employee);
     showEmployeeForm();
   } else {
@@ -96,17 +118,21 @@ function setEmployeeFormData(employee) {
   document.getElementById("designationInput").value = employee.designation;
 }
 
-//set input field's readonly value
+// Set input field's readonly value
 function setReadOnly(value) {
   document.getElementById("idInput").readOnly = value;
 }
 
 // Clear input fields
+// function clearInputFields() {
+//   document.getElementById("nameInput").value = "";
+//   document.getElementById("addressInput").value = "";
+//   document.getElementById("idInput").value = "";
+//   document.getElementById("designationInput").value = "";
+// }
 function clearInputFields() {
-  document.getElementById("nameInput").value = "";
-  document.getElementById("addressInput").value = "";
-  document.getElementById("idInput").value = "";
-  document.getElementById("designationInput").value = "";
+  const inputs = document.querySelectorAll("input[type='text']");
+  inputs.forEach((input) => (input.value = ""));
 }
 
 // Validate employee data
